@@ -1,10 +1,20 @@
 public class ThreadHelper {
 
-    public static void startAndJoinThread(final Thread t) throws Exception {
-        // BEGIN (write your solution here)
-        t.start();
-        t.join();
+    private static int threadCounter = 0;
 
+    public static int fib(final int numberToCalculate) throws Exception {
+        final FibCalculator fibCalculator = new FibCalculator(numberToCalculate);
+        fibCalculator.start();
+        fibCalculator.join();
+        return fibCalculator.getResult();
+    }
+
+    public static void clearCounter() {
+        threadCounter = 0;
+    }
+
+    private static class FibCalculator extends Thread {
+        // BEGIN (write your solution here)
 
         // END
     }

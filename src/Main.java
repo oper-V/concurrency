@@ -1,37 +1,38 @@
-import java.util.Arrays;
 
 public class Main {
 
     public static void main(String... args) throws Exception {
-        final ThreadTester tt = new ThreadTester();
-        ThreadHelper.startAndJoinThread(tt);
-        if (!tt.isStartUsed()) {
-            throw new RuntimeException("Looks like start() method was not called on the Thread");
-        }
-        if (tt.isAlive()) {
-            throw new RuntimeException("Looks like join() method was not called on the Thread");
-        }
+        int number = 1;
+        String message = "## It is test number ";
+
+        System.out.println(message + number++);
+        testFib(1, 1);
+        System.out.println(message + number++);
+        testFib(2, 1);
+        System.out.println(message + number++);
+        testFib(3, 2);
+        System.out.println(message + number++);
+        testFib(4, 3);
+        System.out.println(message + number++);
+        testFib(5, 5);
+        System.out.println(message + number++);
+        testFib(6, 8);
+        System.out.println(message + number++);
+        testFib(7, 13);
+        System.out.println(message + number);
+        testFib(10, 55);
+        System.out.println("End of tests!");
     }
 
-    private static class ThreadTester extends Thread {
-
-        private boolean startUsed;
-
-        @Override
-        public void start() {
-            super.start();
-            startUsed = true;
-        }
-
-        @Override
-        public void run() {
-            try {
-                Thread.sleep(3_000);
-            } catch (final Exception e) {}
-        }
-
-        public boolean isStartUsed() {
-            return startUsed;
+    private static void testFib(final int fibNumber, final int expectedResult) throws Exception {
+        ThreadHelper.clearCounter();
+        final int actualResult = ThreadHelper.fib(fibNumber);
+        if (actualResult != expectedResult) {
+            throw new RuntimeException(
+                    String.format("result is wrong for the input: %d, expected: %d, got: %d",
+                            fibNumber,
+                            expectedResult,
+                            actualResult));
         }
     }
 }
