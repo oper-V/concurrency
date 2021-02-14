@@ -1,38 +1,21 @@
+public class ExperimentalMain {
 
-public class Main {
+    //    static long fibNumber = 15; // 610
+    static long fibNumber = 25; // 75025
 
-    public static void main(String... args) throws Exception {
-        int number = 1;
-        String message = "## It is test number ";
+    public static void main(String... args)  {
+        System.out.println("Available processors: " + Runtime.getRuntime().availableProcessors());
+        long begin = System.currentTimeMillis();
 
-        System.out.println(message + number++);
-        testFib(1, 1);
-        System.out.println(message + number++);
-        testFib(2, 1);
-        System.out.println(message + number++);
-        testFib(3, 2);
-        System.out.println(message + number++);
-        testFib(4, 3);
-        System.out.println(message + number++);
-        testFib(5, 5);
-        System.out.println(message + number++);
-        testFib(6, 8);
-        System.out.println(message + number++);
-        testFib(7, 13);
-        System.out.println(message + number);
-        testFib(10, 55);
-        System.out.println("End of tests!");
-    }
-
-    private static void testFib(final int fibNumber, final int expectedResult) throws Exception {
-        ThreadHelper.clearCounter();
-        final int actualResult = ThreadHelper.fib(fibNumber);
-        if (actualResult != expectedResult) {
-            throw new RuntimeException(
-                    String.format("result is wrong for the input: %d, expected: %d, got: %d",
-                            fibNumber,
-                            expectedResult,
-                            actualResult));
+        try {
+            long result = ThreadHelper.fib(fibNumber);
+            System.out.println("Result: " + result);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+
+
+        long end = System.currentTimeMillis();
+        System.out.printf("Time spent: %d ms\n", end - begin);
     }
 }

@@ -1,56 +1,56 @@
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+
 public class ThreadHelper {
 
-    private static int threadCounter = 0;
+    public static final ExecutorService EXECUTOR_SERVICE
+    // BEGIN (write your solution here) Какой сервис вы создадите и присвоите ссылке выше?
 
-    public static int fib(final int numberToCalculate) throws Exception {
-        final FibCalculator fibCalculator = new FibCalculator(numberToCalculate);
-        fibCalculator.start();
-        fibCalculator.join();
-        return fibCalculator.getResult();
-    }
+    // END
 
-    public static void clearCounter() {
-        threadCounter = 0;
-    }
-
-    private static class FibCalculator extends Thread {
+    public static long fib(final long numberToCalculate) throws Exception {
         // BEGIN (write your solution here)
-        // Поле, которое хранит порядковый номер числа Фибоначчи в текущем объекте.
-        int currentNum;
-        // Поле, которое хранит в себе результат вычисления в текущем объект
-        int result;
-        int lastItem; // = 1
-        int beforeLastItem; //= 0
 
+        // END
+    }
 
+    private static class FibCalculator implements Runnable {
 
-        public FibCalculator(final int numberToCalculate) {
+        private final long currentNum;
+
+        private long result = 0;
+
+        public FibCalculator(final long numberToCalculate) {
             this.currentNum = numberToCalculate;
-            this.lastItem = 1;
-
         }
 
         @Override
         public void run() {
-            if(currentNum == 1) {
+            if (currentNum == 1 || currentNum == 2) {
                 result = 1;
+                return;
             }
-            else {
-                //result = 0;
-                for(int i = 1; i < currentNum; i++) {
-                    result = lastItem + beforeLastItem;
-                    beforeLastItem = lastItem;
-                    lastItem = result;
-                }
+            if (currentNum <= 0) {
+                result = 0;
+                return;
             }
-
+            final FibCalculator left = new FibCalculator(currentNum - 1);
+            final FibCalculator right = new FibCalculator(currentNum - 2);
+            final Future leftF =  EXECUTOR_SERVICE.submit(left);
+            final Future rightF =  EXECUTOR_SERVICE.submit(right);
+            try {
+                leftF.get();
+                rightF.get();
+            } catch (final InterruptedException | ExecutionException e) {
+                e.printStackTrace();
+            }
+            result = left.getResult() + right.getResult();
         }
 
-        public int getResult() {
+        public long getResult() {
             return result;
         }
-
-
-        // END
     }
 }
