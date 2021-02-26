@@ -7,11 +7,19 @@ public class ThreadHelper {
 
     public static final ExecutorService EXECUTOR_SERVICE
     // BEGIN (write your solution here) Какой сервис вы создадите и присвоите ссылке выше?
+           // .newFixedThreadPool(5);
+            = Executors.newCachedThreadPool();
 
     // END
 
     public static long fib(final long numberToCalculate) throws Exception {
         // BEGIN (write your solution here)
+        FibCalculator calc = new FibCalculator(numberToCalculate);
+        final Future<?> future = EXECUTOR_SERVICE.submit(calc);
+        future.get();
+        return calc.getResult();
+
+
 
         // END
     }
