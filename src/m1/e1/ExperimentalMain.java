@@ -1,3 +1,5 @@
+package m1.e1;
+
 public class ExperimentalMain {
 
     //    static long fibNumber = 15; // 610

@@ -1,3 +1,5 @@
+package m1.e1;
+
 public class MaxRunnable implements Runnable {
 
     private final int[] intArray;
