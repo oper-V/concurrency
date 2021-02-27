@@ -1,5 +1,7 @@
 package m2.e1;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.Arrays;
 
 public class GoField {
@@ -11,6 +13,15 @@ public class GoField {
     GoField(){} // Standard constructor
 
     // BEGIN (write your solution here) Maybe you want to write a custom field constructor?
+
+    public GoField(GoField currentGoField) {
+        //System.arraycopy(currentGoField.figures,0, this.figures, currentGoField.figures.length);
+        for (int i = 0; i < FIELD_SIZE; i++) {
+            for (int j = 0; j < FIELD_SIZE; j++) {
+                this.figures[i][j] = currentGoField.figures[i][j];
+            }
+        }
+    }
 
     // END
 
