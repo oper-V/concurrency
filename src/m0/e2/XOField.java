@@ -8,12 +8,14 @@ public class XOField {
 
     private final Figure [][] figures;
 
-    public XOField() {this.figures = new Figure[3][3];}
+    public XOField() {
+        this.figures = new Figure[3][3];
+    }
 
     public XOField(final XOField xoField) {
-        figures = new Figure[3][3];
+        this.figures = new Figure[3][3];
         for (int i = 0; i < 3; i++) {
-            System.arraycopy(xoField.figures[i], 0, figures[1],0,3);
+            System.arraycopy(xoField.figures[i], 0, figures[i],0,3);
         }
     }
 
