@@ -31,7 +31,8 @@ public class GraphBuilder implements Callable<Set<GoField>> {
     public Set<GoField> call() {
         // BEGIN (write your solution here) #1
         final List<Future<Set<GoField>>> futures = new ArrayList<>();
-        final Set<GoField> finalGoField = new CopyOnWriteArraySet<>();
+        //final Set<GoField> finalGoField = new CopyOnWriteArraySet<>();
+        final Set<GoField> finalGoField = new HashSet<>();
 
         // END #1
         // BEGIN (write your solution here) #2
@@ -42,11 +43,15 @@ public class GraphBuilder implements Callable<Set<GoField>> {
                 }
                 final GoField newField = new GoField(currentField);
                 newField.figures[x][y] = nextFigure;
+
+/*
                 if (this.isCurrentFieldFinal()) {
 
-                    finalGoField.add(newField);
+                    //finalGoField.add(newField);
+                    return new HashSet<GoField>(){{add(currentField);}};
                 }
 
+ */
                 final GraphBuilder graphBuilder = new GraphBuilder(
                         executorService,
                         nextFigure,
@@ -56,7 +61,9 @@ public class GraphBuilder implements Callable<Set<GoField>> {
                     final Future<Set<GoField>> future = executorService.submit(graphBuilder);
                     futures.add(future);
                 } else {
-                    finalGoField.add((GoField) graphBuilder.call());
+                    if (this.isCurrentFieldFinal()) {
+                        finalGoField.addAll(graphBuilder.call());
+                    }
 
                 }
             }
@@ -65,7 +72,7 @@ public class GraphBuilder implements Callable<Set<GoField>> {
         if (!futures.isEmpty())  {
             for (Future<Set<GoField>> future : futures) {
                 try {
-                    finalGoField.add((GoField) future.get());
+                    finalGoField.addAll(future.get());
                 } catch (InterruptedException | ExecutionException e) {
                     throw new RuntimeException(e);
                 }
